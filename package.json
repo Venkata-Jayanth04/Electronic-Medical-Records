@@ -1,0 +1,19 @@
+{
+  "name": "electronic_medical_records",
+  "version": "1.0.0",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "migrate": "truffle migrate --reset",
+    "postmigrate": "node copy-abi.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ipfs-http-client": "^60.0.1"
+  }
+}
