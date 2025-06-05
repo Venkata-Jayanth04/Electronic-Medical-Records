@@ -1,0 +1,15 @@
+.doctor-dashboard {
+  padding: 20px;
+}
+
+.doctor-dashboard ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.doctor-dashboard li {
+  background-color: #c8e6c9;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
