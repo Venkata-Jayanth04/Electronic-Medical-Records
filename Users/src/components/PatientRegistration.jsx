@@ -21,13 +21,21 @@ const PatientRegistration = () => {
   const navigate = useNavigate();
 
   const connectWallet = async () => {
-    const web3 = await getWeb3();
-    if (!web3) {
-      setStatus("Please install MetaMask.");
-      return;
+    try {
+      const web3 = await getWeb3();
+      if (!web3) {
+        setStatus("Please install MetaMask.");
+        return;
+      }
+      const accounts = await web3.eth.getAccounts();
+      if (!accounts.length) {
+        setStatus("Please connect your MetaMask wallet.");
+        return;
+      }
+      setAccount(accounts[0]);
+    } catch (err) {
+      setStatus("Failed to connect wallet.");
     }
-    const accounts = await web3.eth.getAccounts();
-    setAccount(accounts[0]);
   };
 
   const handleChange = (e) => {
@@ -76,7 +84,6 @@ const PatientRegistration = () => {
       )}
 
       <form onSubmit={handleSubmit}>
-        {/* Input fields similar to previous example */}
         <input name="firstName" placeholder="First Name" onChange={handleChange} required />
         <input name="lastName" placeholder="Last Name" onChange={handleChange} required />
         <input type="date" name="dateOfBirth" onChange={handleChange} required />
