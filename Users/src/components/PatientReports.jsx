@@ -13,27 +13,45 @@ const PatientReports = () => {
 
   useEffect(() => {
     async function loadDoctors() {
-      const web3 = await getWeb3();
-      if (!web3) {
-        setStatus("Please install MetaMask.");
-        return;
-      }
-      const accounts = await web3.eth.getAccounts();
-      setAccount(accounts[0]);
-      const contractInstance = await getContract(web3);
-      setContract(contractInstance);
-
-      const allDoctors = await contractInstance.methods.getAllRegisteredDoctors().call();
-      const approvedDoctors = [];
-      for (const doctorAddr of allDoctors) {
-        const approved = await contractInstance.methods.isApproved(accounts[0], doctorAddr).call();
-        if (approved) {
-          const details = await contractInstance.methods.getDoctorDetails(doctorAddr).call();
-          approvedDoctors.push({ address: doctorAddr, firstName: details.firstName, lastName: details.lastName });
+      try {
+        const web3 = await getWeb3();
+        if (!web3) {
+          setStatus("Please install MetaMask.");
+          return;
         }
+        const accounts = await web3.eth.getAccounts();
+        if (!accounts.length) {
+          setStatus("Please connect MetaMask wallet.");
+          return;
+        }
+        setAccount(accounts[0]);
+        const contractInstance = await getContract(web3);
+        setContract(contractInstance);
+
+        const allDoctors = await contractInstance.methods.getAllRegisteredDoctors().call();
+        const approvedDoctors = [];
+
+        for (const doctorAddrRaw of allDoctors) {
+          const doctorAddr = web3.utils.toChecksumAddress(doctorAddrRaw);
+          if (!web3.utils.isAddress(doctorAddr)) continue;
+
+          // Check if doctor is approved by patient (account)
+          const approved = await contractInstance.methods.isApproved(accounts[0], doctorAddr).call();
+          if (approved) {
+            const details = await contractInstance.methods.getDoctorDetails(doctorAddr).call();
+            approvedDoctors.push({
+              address: doctorAddr,
+              firstName: details.firstName,
+              lastName: details.lastName,
+            });
+          }
+        }
+        setDoctors(approvedDoctors);
+        if (approvedDoctors.length > 0) setSelectedDoctor(approvedDoctors[0].address);
+      } catch (err) {
+        console.error(err);
+        setStatus("Failed to load doctors.");
       }
-      setDoctors(approvedDoctors);
-      if (approvedDoctors.length > 0) setSelectedDoctor(approvedDoctors[0].address);
     }
     loadDoctors();
   }, []);
