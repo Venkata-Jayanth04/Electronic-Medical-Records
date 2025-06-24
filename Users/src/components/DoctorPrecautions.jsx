@@ -12,26 +12,44 @@ const DoctorPrecautions = () => {
 
   useEffect(() => {
     async function loadPatients() {
-      const web3 = await getWeb3();
-      if (!web3) {
-        setStatus("Please install MetaMask.");
-        return;
-      }
-      const accounts = await web3.eth.getAccounts();
-      setAccount(accounts[0]);
-      const contractInstance = await getContract(web3);
-      setContract(contractInstance);
-
-      const allPatients = await contractInstance.methods.getAllRegisteredPatients().call();
-      const approvedPatients = [];
-      for (const patientAddr of allPatients) {
-        const approved = await contractInstance.methods.isApproved(patientAddr, accounts[0]).call();
-        if (approved) {
-          const details = await contractInstance.methods.patients(patientAddr).call();
-          approvedPatients.push({ address: patientAddr, firstName: details.firstName, lastName: details.lastName });
+      try {
+        const web3 = await getWeb3();
+        if (!web3) {
+          setStatus("Please install MetaMask.");
+          return;
         }
+        const accounts = await web3.eth.getAccounts();
+        if (!accounts.length) {
+          setStatus("Please connect MetaMask wallet.");
+          return;
+        }
+        setAccount(accounts[0]);
+        const contractInstance = await getContract(web3);
+        setContract(contractInstance);
+
+        const allPatients = await contractInstance.methods.getAllRegisteredPatients().call();
+        const approvedPatients = [];
+
+        for (const patientAddrRaw of allPatients) {
+          const patientAddr = web3.utils.toChecksumAddress(patientAddrRaw);
+          if (!web3.utils.isAddress(patientAddr)) continue;
+
+          // Check if patient approved this doctor (account)
+          const approved = await contractInstance.methods.isApproved(patientAddr, accounts[0]).call();
+          if (approved) {
+            const details = await contractInstance.methods.patients(patientAddr).call();
+            approvedPatients.push({
+              address: patientAddr,
+              firstName: details.firstName,
+              lastName: details.lastName,
+            });
+          }
+        }
+        setPatients(approvedPatients);
+      } catch (err) {
+        console.error(err);
+        setStatus("Failed to load patients.");
       }
-      setPatients(approvedPatients);
     }
     loadPatients();
   }, []);
@@ -73,7 +91,10 @@ const DoctorPrecautions = () => {
           {patients.map((patient) => (
             <li key={patient.address}>
               {patient.firstName} {patient.lastName}
-              <button style={{ marginLeft: "10px" }} onClick={() => sendPrescription(patient.address)}>
+              <button
+                style={{ marginLeft: "10px" }}
+                onClick={() => sendPrescription(patient.address)}
+              >
                 Send
               </button>
             </li>
