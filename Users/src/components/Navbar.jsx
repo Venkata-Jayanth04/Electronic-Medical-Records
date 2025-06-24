@@ -11,6 +11,7 @@ const Navbar = ({ role }) => {
           <Link to="/patient/dashboard" style={linkStyle(location.pathname === "/patient/dashboard")}>Dashboard</Link>
           <Link to="/patient/doctors" style={linkStyle(location.pathname === "/patient/doctors")}>View Doctors</Link>
           <Link to="/patient/reports" style={linkStyle(location.pathname === "/patient/reports")}>Send Reports</Link>
+          <Link to="/patient/prescriptions" style={linkStyle(location.pathname === "/patient/prescriptions")}>Prescriptions</Link>
         </>
       )}
       {role === "doctor" && (
@@ -18,6 +19,7 @@ const Navbar = ({ role }) => {
           <Link to="/doctor/dashboard" style={linkStyle(location.pathname === "/doctor/dashboard")}>Dashboard</Link>
           <Link to="/doctor/patients" style={linkStyle(location.pathname === "/doctor/patients")}>View Patients</Link>
           <Link to="/doctor/precautions" style={linkStyle(location.pathname === "/doctor/precautions")}>Send Precautions</Link>
+          <Link to="/doctor/reports" style={linkStyle(location.pathname === "/doctor/reports")}>Reports</Link>
         </>
       )}
     </nav>
