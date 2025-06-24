@@ -1,0 +1,88 @@
+.dashboard-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px 20px;
+  background: #f9fbff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.dashboard-container h2 {
+  color: #1976d2;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.profile-image {
+  display: block;
+  margin: 0 auto 25px auto;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #1976d2;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  max-width: 400px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+.info-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.info-list li strong {
+  width: 140px;
+  display: inline-block;
+  color: #1976d2;
+}
+
+.list-item {
+  background-color: #e3f2fd;
+  margin-bottom: 12px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-item a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.list-item a:hover {
+  text-decoration: underline;
+}
+
+.button-primary {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button-primary:hover {
+  background-color: #115293;
+}
+
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  padding: 20px;
+}
