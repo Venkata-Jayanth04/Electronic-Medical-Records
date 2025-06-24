@@ -19,7 +19,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     formData.append("file", file.buffer, file.originalname);
 
     const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-      maxBodyLength: "Infinity",
+      maxBodyLength: Infinity,
       headers: {
         ...formData.getHeaders(),
         pinata_api_key: process.env.PINATA_API_KEY,
