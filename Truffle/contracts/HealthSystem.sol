@@ -105,7 +105,6 @@ contract HealthSystem {
         emit DoctorRegistered(msg.sender);
     }
 
-    // New getter function to fetch detailed doctor info by address
     function getDoctorDetails(address _doctor) public view returns (
         string memory firstName,
         string memory lastName,
@@ -180,5 +179,15 @@ contract HealthSystem {
         require(isApproved(msg.sender, _doctor), "Patient not approved doctor");
         patientReports[msg.sender][_doctor].push(_reportHash);
         emit ReportSent(msg.sender, _doctor, _reportHash);
+    }
+
+    // === NEW GETTER FUNCTIONS ===
+
+    function getPatientReports(address patient, address doctor) public view returns (string[] memory) {
+        return patientReports[patient][doctor];
+    }
+
+    function getDoctorPrescriptions(address doctor, address patient) public view returns (string[] memory) {
+        return doctorPrescriptions[doctor][patient];
     }
 }
