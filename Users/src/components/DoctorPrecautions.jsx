@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import '../css/DoctorPrecautions.css';
 import { getWeb3, getContract } from "../utils/blockchain";
 import { uploadFileToPinata } from "../utils/pinata";
 import Navbar from "./Navbar";
