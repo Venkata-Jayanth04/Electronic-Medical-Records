@@ -25,6 +25,9 @@ contract HealthSystem {
         string phoneNumber;
         address walletAddress;
         bool isRegistered;
+        string licensenumber;
+        string Doctoraddress;
+        string YearsExperience;
     }
 
     struct ConsultationRequest {
@@ -89,9 +92,13 @@ contract HealthSystem {
         string memory _lastName,
         string memory _specialization,
         string memory _email,
-        string memory _phoneNumber
+        string memory _phoneNumber,
+        string memory _Address,
+        string memory _Experience,
+        string memory _LicenceNumber
     ) public {
         require(!doctors[msg.sender].isRegistered, "Doctor already registered");
+
         doctors[msg.sender] = Doctor({
             firstName: _firstName,
             lastName: _lastName,
@@ -99,8 +106,12 @@ contract HealthSystem {
             email: _email,
             phoneNumber: _phoneNumber,
             walletAddress: msg.sender,
-            isRegistered: true
+            isRegistered: true,
+            licensenumber: _LicenceNumber,
+            Doctoraddress: _Address,
+            YearsExperience: _Experience
         });
+
         registeredDoctors.push(msg.sender);
         emit DoctorRegistered(msg.sender);
     }
@@ -110,7 +121,10 @@ contract HealthSystem {
         string memory lastName,
         string memory specialization,
         string memory email,
-        string memory phoneNumber
+        string memory phoneNumber,
+        string memory licensenumber,
+        string memory Doctoraddress,
+        string memory YearsExperience
     ) {
         Doctor memory d = doctors[_doctor];
         require(d.isRegistered, "Doctor not registered");
@@ -119,7 +133,10 @@ contract HealthSystem {
             d.lastName,
             d.specialization,
             d.email,
-            d.phoneNumber
+            d.phoneNumber,
+            d.licensenumber,
+            d.Doctoraddress,
+            d.YearsExperience
         );
     }
 
