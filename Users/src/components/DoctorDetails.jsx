@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import '../css/DoctorDetails.css';
 import { getWeb3, getContract } from "../utils/blockchain";
 import Navbar from "./Navbar";
-import "../css/patient.css";
 
 const DoctorDetails = () => {
   const [account, setAccount] = useState(null);
@@ -82,15 +82,16 @@ const DoctorDetails = () => {
   return (
     <>
       <Navbar role="patient" />
-      <div className="patient-dashboard">
-        <h2>Available Doctors</h2>
+      <div className="container-doctordetails">
+        <h2 className="title-doctordetails">Available Doctors</h2>
         {doctors.length === 0 ? (
           <p>No doctors available.</p>
         ) : (
-          <ul>
+          <ul className="list-doctors">
             {doctors.map((doc, idx) => (
-              <li key={idx} className="doctor-details">
-                <strong>Dr. {doc.firstName} {doc.lastName}</strong> - {doc.specialization}
+              <li key={idx} className="card-doctordetails">
+                <strong>Dr. {doc.firstName} {doc.lastName}</strong> — {doc.specialization}
+                <br />
                 <button
                   className="btn-apply"
                   onClick={() => applyForMeeting(doc.walletAddress)}
