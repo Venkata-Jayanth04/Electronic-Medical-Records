@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import '../css/PatientDetails.css';
 import { getWeb3, getContract } from "../utils/blockchain";
 import Navbar from "./Navbar";
 
