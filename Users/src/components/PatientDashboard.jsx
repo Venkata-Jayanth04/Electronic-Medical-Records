@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
+import "../css/PatientDashboard.css";
 import { getWeb3, getContract } from "../utils/blockchain";
 import Navbar from "./Navbar";
+import patientImg from "../images/patient1.png"; // ✅ Use your own image path
 
-const PatientDashboard = () => {
-  const [account, setAccount] = useState(null);
-  const [patientDetails, setPatientDetails] = useState(null);
-  const [doctors, setDoctors] = useState([]);
+function PatientDashboard() {
+  const [, setAccount] = useState(null);
+  const [patient, setPatient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadData() {
+    async function loadPatient() {
       try {
         const web3 = await getWeb3();
         if (!web3) throw new Error("Please install MetaMask.");
@@ -19,61 +20,49 @@ const PatientDashboard = () => {
         setAccount(accounts[0]);
 
         const contract = await getContract(web3);
-
-        // Load patient details
         const details = await contract.methods.patients(accounts[0]).call();
         if (!details.isRegistered) throw new Error("You are not registered as a patient.");
-        setPatientDetails(details);
-
-        // Load all doctors
-        const doctorAddresses = await contract.methods.getAllRegisteredDoctors().call();
-        const doctorDetailsList = await Promise.all(
-          doctorAddresses.map(async (addr) => {
-            const doc = await contract.methods.getDoctorDetails(addr).call();
-            return { ...doc, walletAddress: addr };
-          })
-        );
-        setDoctors(doctorDetailsList);
-
+        setPatient(details);
         setLoading(false);
       } catch (err) {
-        setError(err.message || "Failed to load data.");
+        setError(err.message || "Failed to load patient details.");
         setLoading(false);
       }
     }
-    loadData();
+    loadPatient();
   }, []);
 
-  if (loading) return <p>Loading patient dashboard...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (loading) return <p className="loading">Loading patient dashboard...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <>
       <Navbar role="patient" />
-      <div style={{ padding: "20px" }}>
-        <h2>Welcome, {patientDetails.firstName}!</h2>
-        <p><strong>Blood Group:</strong> {patientDetails.bloodGroup}</p>
-        <p><strong>Date of Birth:</strong> {patientDetails.dateOfBirth}</p>
-        <p><strong>Phone:</strong> {patientDetails.phoneNumber}</p>
+      <div className="container-patientdashboard">
+        <div className="header-patientdashboard">
+          <h2>
+            Welcome {patient.firstName} {patient.lastName}
+          </h2>
+        </div>
 
-        <h3>Available Doctors</h3>
-        {doctors.length === 0 ? (
-          <p>No doctors available</p>
-        ) : (
-          <ul>
-            {doctors.map((doc, idx) => (
-              <li key={idx}>
-                Dr. {doc.firstName} {doc.lastName} - {doc.specialization}
-                <button style={{ marginLeft: "10px" }} onClick={() => alert(`Apply for meeting with Dr. ${doc.firstName}`)}>
-                  Apply for Meeting
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="card-patientdashboard-layout">
+          <div className="details-patientdashboard">
+            <p><strong>Date of Birth:</strong> {patient.dateOfBirth}</p>
+            <p><strong>Email:</strong> {patient.email}</p>
+            <p><strong>Gender:</strong> {patient.gender}</p>
+            <p><strong>Address:</strong> {patient.patientAddress}</p>
+            <p><strong>Phone:</strong> {patient.phoneNumber}</p>
+            <p><strong>Blood Group:</strong> {patient.bloodGroup}</p>
+            <p><strong>Insurance:</strong> {patient.insuranceProvider}</p>
+            <p><strong>Policy Number:</strong> {patient.policyNumber}</p>
+          </div>
+          <div className="image-patientdashboard">
+            <img src={patientImg} alt="Patient" />
+          </div>
+        </div>
       </div>
     </>
   );
-};
+}
 
 export default PatientDashboard;
