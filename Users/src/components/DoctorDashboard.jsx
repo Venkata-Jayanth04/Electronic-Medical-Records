@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import "../css/DoctorDashboard.css";
 import { getWeb3, getContract } from "../utils/blockchain";
 import Navbar from "./Navbar";
-import "../css/doctor.css";
+import doctorImg from "../images/patient1.png";
 
-const DoctorDashboard = () => {
-  const [account, setAccount] = useState(null);
-  const [doctorDetails, setDoctorDetails] = useState(null);
+function DoctorDashboard() {
+  const [, setAccount] = useState(null);
+  const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,7 +22,7 @@ const DoctorDashboard = () => {
         const contract = await getContract(web3);
         const details = await contract.methods.doctors(accounts[0]).call();
         if (!details.isRegistered) throw new Error("You are not registered as a doctor.");
-        setDoctorDetails(details);
+        setDoctor(details);
         setLoading(false);
       } catch (err) {
         setError(err.message || "Failed to load doctor details.");
@@ -37,19 +38,27 @@ const DoctorDashboard = () => {
   return (
     <>
       <Navbar role="doctor" />
-      <div className="doctor-dashboard">
-        <h2>Welcome Dr. {doctorDetails.firstName} {doctorDetails.lastName}</h2>
-        <img
-          src="/images/doctor-placeholder.png"
-          alt="Doctor"
-          className="profile-image"
-        />
-        <p><strong>Specialization:</strong> {doctorDetails.specialization}</p>
-        <p><strong>Email:</strong> {doctorDetails.email}</p>
-        <p><strong>Phone:</strong> {doctorDetails.phoneNumber}</p>
+      <div className="container-doctordashboard">
+        <div className="header-doctordashboard">
+          <h2>Welcome Dr. {doctor.firstName} {doctor.lastName}</h2>
+        </div>
+
+        <div className="card-doctordashboard-layout">
+          <div className="details-doctordashboard">
+            <p><strong>Specialization:</strong> {doctor.specialization}</p>
+            <p><strong>Email:</strong> {doctor.email}</p>
+            <p><strong>Phone:</strong> {doctor.phoneNumber}</p>
+            <p><strong>Address:</strong> {doctor.licensenumber}</p>
+            <p><strong>Years of Experience:</strong> {doctor.YearsExperience}</p>
+            <p><strong>Medical License Number:</strong> {doctor.Doctoraddress}</p>
+          </div>
+          <div className="image-doctordashboard">
+            <img src={doctorImg} alt="Doctor" />
+          </div>
+        </div>
       </div>
     </>
   );
-};
+}
 
 export default DoctorDashboard;
