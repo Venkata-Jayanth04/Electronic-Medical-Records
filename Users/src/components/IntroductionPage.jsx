@@ -1,6 +1,8 @@
 import React from "react";
+import "../css/IntroductionPage.css";
 import { useNavigate } from "react-router-dom";
-import "../css/common.css";
+import logo from "../images/logo.png";
+import bgImage from "../images/background.png";
 
 const IntroductionPage = () => {
   const navigate = useNavigate();
@@ -10,15 +12,26 @@ const IntroductionPage = () => {
   };
 
   return (
-    <div className="centered-container">
-      <h1>Electronic Medical Records (EMR) System</h1>
-      <img
-        src="/images/intro-image.jpg"
-        alt="Medical Records"
-        style={{ maxWidth: "100%", height: "auto", marginTop: 20 }}
-      />
-      <p>Your secure blockchain-based medical record system.</p>
-      <button onClick={proceed}>Get Started</button>
+    <div
+      className="container-intro"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* ✅ Overlay darkens the background */}
+      <div className="overlay">
+        <img src={logo} alt="EMR Logo" className="logo-intro" />
+        <h1 className="title-intro">Electronic Medical Records (EMR) System</h1>
+        <p className="subtitle-intro">
+          Your secure blockchain-based medical record system.
+        </p>
+        <button className="btn-start" onClick={proceed}>
+          Get Started
+        </button>
+      </div>
     </div>
   );
 };
