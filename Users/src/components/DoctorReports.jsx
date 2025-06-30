@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
+import '../css/DoctorReports.css';
 import { getWeb3, getContract } from "../utils/blockchain";
 import Navbar from "./Navbar";
-import "../css/dashboard.css";
 
-const DoctorReports = () => {
-  const [account, setAccount] = useState(null);
+function DoctorReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -14,14 +13,14 @@ const DoctorReports = () => {
       try {
         const web3 = await getWeb3();
         if (!web3) throw new Error("Please install MetaMask.");
+
         const accounts = await web3.eth.getAccounts();
         if (!accounts.length) throw new Error("Please connect MetaMask wallet.");
+
         const doctorAddress = web3.utils.toChecksumAddress(accounts[0]);
-        setAccount(doctorAddress);
-
         const contract = await getContract(web3);
-        const patientsRaw = await contract.methods.getAllRegisteredPatients().call();
 
+        const patientsRaw = await contract.methods.getAllRegisteredPatients().call();
         const allReports = [];
 
         for (const patientAddrRaw of patientsRaw) {
@@ -30,11 +29,10 @@ const DoctorReports = () => {
 
           const approved = await contract.methods.isApproved(patientAddr, doctorAddress).call();
           if (approved) {
-            // Use the new getter function!
             const hashes = await contract.methods.getPatientReports(patientAddr, doctorAddress).call();
             if (hashes && hashes.length > 0) {
               const patientDetails = await contract.methods.patients(patientAddr).call();
-              hashes.forEach(hash => {
+              hashes.forEach((hash) => {
                 allReports.push({
                   patientName: `${patientDetails.firstName} ${patientDetails.lastName}`,
                   ipfsHash: hash,
@@ -48,29 +46,35 @@ const DoctorReports = () => {
         setReports(allReports);
         setLoading(false);
       } catch (err) {
+        console.error(err);
         setError(err.message || "Failed to load reports.");
         setLoading(false);
       }
     }
+
     loadReports();
   }, []);
 
-  if (loading) return <p className="dashboard-container">Loading reports...</p>;
-  if (error) return <p className="dashboard-container" style={{ color: "red" }}>{error}</p>;
+  if (loading) return <p className="loading">Loading reports...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <>
       <Navbar role="doctor" />
-      <div className="dashboard-container">
-        <h2>Reports Sent by Patients</h2>
+      <div className="container-doctorreports">
+        <h2 className="title-doctorreports">Reports Sent by Patients</h2>
         {reports.length === 0 ? (
           <p>No reports available.</p>
         ) : (
-          <ul style={{ listStyle: "none", padding: 0 }}>
+          <ul className="report-list">
             {reports.map((report, idx) => (
-              <li key={idx} className="list-item">
+              <li key={idx} className="report-card">
                 <strong>Patient:</strong> {report.patientName} <br />
-                <a href={`https://ipfs.io/ipfs/${report.ipfsHash}`} target="_blank" rel="noreferrer">
+                <a
+                  href={`https://ipfs.io/ipfs/${report.ipfsHash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   View Report (IPFS)
                 </a>
               </li>
@@ -80,6 +84,6 @@ const DoctorReports = () => {
       </div>
     </>
   );
-};
+}
 
 export default DoctorReports;
