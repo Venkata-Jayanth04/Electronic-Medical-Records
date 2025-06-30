@@ -1,0 +1,50 @@
+.container-doctordashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+
+  /* ✅ Center the entire content vertically and horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-doctordashboard h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center; /* Center the heading text */
+}
+
+.card-doctordashboard-layout {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+  max-width: 800px; /* Limit max width */
+  width: 100%;
+}
+
+.details-doctordashboard {
+  flex: 1;
+}
+
+.details-doctordashboard p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.image-doctordashboard img {
+  width: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+}

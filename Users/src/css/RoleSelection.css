@@ -1,0 +1,79 @@
+.container-roleselection {
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title-roleselection {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #5a87b5;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.role-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 20px;
+  width: 220px;
+  height: 220px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.role-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+.role-button span {
+  margin-top: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.role-icon {
+  width: 90px;
+  height: 90px;
+}
+
+/* Specific button styles */
+.role-button.patient {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.role-button.doctor {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.title-roleselection {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.container-roleselection {
+  text-align: center;
+  padding: 3rem;
+}
